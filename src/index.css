@@ -1,6 +1,16 @@
 @import "tailwindcss";
 
-body{
+:root {
+  --white-color1: #FFF;
+}
+
+body {
   min-height: 100vh;
   background: linear-gradient(#232630, #050507);
+}
+
+.social-icon {
+  width: 35px; 
+  height: 35px;
+  fill: var(--white-color1);
 }
