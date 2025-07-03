@@ -2,6 +2,7 @@
 
 :root {
   --white-color1: #FFF;
+  --danger-color1: #DB2629;
 }
 
 body {
@@ -13,4 +14,10 @@ body {
   width: 35px; 
   height: 35px;
   fill: var(--white-color1);
+}
+
+.danger-button {
+  color: var(--danger-color1); 
+  width: 28px; 
+  height: 28px;
 }
