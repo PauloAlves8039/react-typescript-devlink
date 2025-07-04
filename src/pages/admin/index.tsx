@@ -1,4 +1,4 @@
-import { useState, type FormEvent } from "react";
+import { useEffect, useState, type FormEvent } from "react";
 import { Header } from "../../components/Header";
 import { Input } from "../../components/Input";
 import { FiTrash } from "react-icons/fi";
@@ -13,12 +13,48 @@ import {
   deleteDoc,
 } from "firebase/firestore";
 
+interface LinksProps {
+    id: string;
+    name: string;
+    url: string;
+    bg: string;
+    color: string;
+}
+
 export function Admin() {
     const [nameInput, setNameInput] = useState("");
     const [urlInput, setUrlInput] = useState("");
     const [textColorInput, setTextColorInput] = useState("#F1F1F1");
     const [backgroundColorInput, setBackgroundColorInput] = useState("#121212");
+    const [links, setLinks] = useState<LinksProps[]>([]);
 
+    useEffect(() => {
+        const linksRef = collection(db, "links");
+        const queryRef = query(linksRef, orderBy("created", "asc"));
+
+        const unsub = onSnapshot(queryRef, (snapshot) => {
+            let linkList = [] as LinksProps[];
+
+            snapshot.forEach((doc) => {
+                linkList.push({
+                    id: doc.id,
+                    name: doc.data().name,
+                    url: doc.data().url,
+                    bg: doc.data().bg,
+                    color: doc.data().color
+                });
+            });
+
+            setLinks(linkList);
+
+        });
+
+        return () => {
+            unsub();
+        }
+
+    }, []);
+    
     function handleRegister(e: FormEvent) {
         e.preventDefault();
 
@@ -114,19 +150,22 @@ export function Admin() {
                     Meus links
                 </h2>
 
-                <article
-                    className="flex items-center justify-between w-11/12 max-w-xl rounded py-3 px-2 mb-2 select-none"
-                    style={{ backgroundColor: "#2563EB", color: "#FFF" }}
-                >
-                    <p>Canal do yotube</p>
-                    <div>
-                        <button
-                            className="border border-dashed p-1 rounded bg-neutral-900"
-                        >
-                            <FiTrash size={18} color="#FFF" />
-                        </button>
-                    </div>
-                </article>
+                {links.map((link) => (
+                    <article
+                        key={link.id}
+                        className="flex items-center justify-between w-11/12 max-w-xl rounded py-3 px-2 mb-2 select-none"
+                        style={{ backgroundColor: link.bg, color: link.color }}
+                    >
+                        <p>{link.name}</p>
+                        <div>
+                            <button
+                                className="border border-dashed p-1 rounded bg-neutral-900"
+                            >
+                                <FiTrash size={18} color="#FFF" />
+                            </button>
+                        </div>
+                    </article>
+                ))}
 
             </form>
         </div>
