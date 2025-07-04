@@ -79,6 +79,11 @@ export function Admin() {
                 console.log(`ERRO AO CADASTRAR NO BANCO ${error}`);
             });
     }
+
+    async function handleDeleteLink(id: string) {
+        const decRef = doc(db, "links", id);
+        await deleteDoc(decRef);
+    }
     
     return (
         <div className="flex items-center flex-col min-h-screen pb-7 px-2">
@@ -145,29 +150,30 @@ export function Admin() {
                 <button type="submit" className="mb-7 bg-blue-600 h-9 rounded-md text-white font-medium gap-4 flex justify-center items-center">
                     Cadastrar
                 </button>
-
-                <h2 className="font-bold text-white mb-4 text-2xl">
-                    Meus links
-                </h2>
-
-                {links.map((link) => (
-                    <article
-                        key={link.id}
-                        className="flex items-center justify-between w-11/12 max-w-xl rounded py-3 px-2 mb-2 select-none"
-                        style={{ backgroundColor: link.bg, color: link.color }}
-                    >
-                        <p>{link.name}</p>
-                        <div>
-                            <button
-                                className="border border-dashed p-1 rounded bg-neutral-900"
-                            >
-                                <FiTrash size={18} color="#FFF" />
-                            </button>
-                        </div>
-                    </article>
-                ))}
-
             </form>
+
+            <h2 className="font-bold text-white mb-4 text-2xl">
+                Meus links
+            </h2>
+
+            {links.map((link) => (
+                <article
+                    key={link.id}
+                    className="flex items-center justify-between w-11/12 max-w-xl rounded py-3 px-2 mb-2 select-none"
+                    style={{ backgroundColor: link.bg, color: link.color }}
+                >
+                    <p>{link.name}</p>
+                    <div>
+                        <button
+                            className="border border-dashed p-1 rounded bg-neutral-900"
+                            onClick={() => handleDeleteLink(link.id)}
+                        >
+                            <FiTrash size={18} color="#FFF" />
+                        </button>
+                    </div>
+                </article>
+            ))}
+
         </div>
     );
 }
