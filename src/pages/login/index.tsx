@@ -1,9 +1,9 @@
 import { Link, useNavigate } from "react-router-dom";
 import { Input } from "../../components/Input";
 import { useState, type FormEvent } from "react";
-
 import { auth } from "../../services/firebaseConnection";
 import { signInWithEmailAndPassword } from "firebase/auth";
+import notificationService from "../../utils/notificationService";
 
 export function Login() {
     const [email, setEmail] = useState("");
@@ -14,18 +14,18 @@ export function Login() {
         e.preventDefault();
 
         if(email === "" || password === ""){
-            alert("Preencha todos os campos!");
+            notificationService.error("Preencha todos os campos!");
             return;
         }
 
         signInWithEmailAndPassword(auth, email, password)
         .then(() => {
             navigate("/admin", { replace: true });
-            console.log("Logado com sucesso!");
+            notificationService.success("Logado com sucesso!");
         })
         .catch((error) => {
-            console.log("Erro ao fazer login!");
-            console.log(error);
+            notificationService.error("Erro ao fazer login! Verifique suas credenciais.");
+            console.log(`Erro ao logar: ${error}`);
         });
     }
     

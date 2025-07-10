@@ -12,6 +12,7 @@ import {
   doc,
   deleteDoc,
 } from "firebase/firestore";
+import notificationService from "../../utils/notificationService"; 
 
 interface LinksProps {
     id: string;
@@ -47,6 +48,9 @@ export function Admin() {
 
             setLinks(linkList);
 
+        }, (error) => {
+            notificationService.error("Erro ao carregar os links.");
+            console.error("Erro ao carregar links:", error);
         });
 
         return () => {
@@ -59,7 +63,7 @@ export function Admin() {
         e.preventDefault();
 
         if (nameInput === "" || urlInput === "") {
-            alert("Preencha todos os campos!");
+            notificationService.error("Preencha todos os campos!");
             return;
         }
 
@@ -73,16 +77,23 @@ export function Admin() {
             .then(() => {
                 setNameInput("");
                 setUrlInput("");
-                console.log("CADASTRADO COM SUCESSO!");
+                notificationService.success("Link cadastrado com sucesso!");
             })
             .catch((error) => {
-                console.log(`ERRO AO CADASTRAR NO BANCO ${error}`);
+                notificationService.error("Erro ao cadastrar o link.");
+                console.log(`Erro ao cadastrar no banco: ${error}`);
             });
     }
 
     async function handleDeleteLink(id: string) {
         const decRef = doc(db, "links", id);
-        await deleteDoc(decRef);
+        try {
+            await deleteDoc(decRef);
+            notificationService.success("Link excluído com sucesso!");
+        } catch (error) {
+            notificationService.error("Erro ao excluir o link.");
+            console.error("Erro ao excluir link:", error);
+        }
     }
     
     return (

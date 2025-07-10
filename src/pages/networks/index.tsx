@@ -3,6 +3,7 @@ import { db } from "../../services/firebaseConnection";
 import { setDoc, doc, getDoc } from "firebase/firestore";
 import { Header } from "../../components/Header";
 import { Input } from "../../components/Input";
+import notificationService from "../../utils/notificationService";
 
 export function Networks() {
     const [facebook, setFacebook] = useState("");
@@ -20,6 +21,10 @@ export function Networks() {
                         setInstagram(snapshot.data()?.instagram);
                         setYoutube(snapshot.data()?.youtube);
                     }
+                })
+                .catch((error) => {
+                    notificationService.error("Erro ao carregar os links.");
+                    console.error("Erro ao carregar links:", error);
                 });
         }
 
@@ -35,10 +40,11 @@ export function Networks() {
             youtube: youtube
         })
         .then(() => {
-            console.log("CADASTRADO COM SUCESSO!");
+            notificationService.success("Links cadastrados com sucesso!"); 
             clearFields();
         })
         .catch((error) => {
+            notificationService.error("Erro ao salvar os links.");
             console.log(`ERRO AO SALVAR ${error}`);
         });
     }
