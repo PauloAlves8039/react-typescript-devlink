@@ -10,23 +10,12 @@ import {
   getDoc
 } from "firebase/firestore";
 import { useEffect, useState } from "react";
-
-interface LinkProps {
-    id: string;
-    name: string;
-    url: string;
-    bg: string;
-    color: string;
-}
-
-interface SocialLinksProps {
-    facebook: string;
-    youtube: string;
-    instagram: string;
-}
+import type { LinksProps } from "../../interfaces/LinksProps";
+import type { SocialLinksProps } from "../../interfaces/SocialLinksProps";
 
 export function Home() {
-    const [links, setLinks] = useState<LinkProps[]>([]);
+    // const [links, setLinks] = useState<LinkProps[]>([]);
+    const [links, setLinks] = useState<LinksProps[]>([]);
     const [socialLinks, setSocialLinks] = useState<SocialLinksProps>();
 
     useEffect(() => {
@@ -36,7 +25,7 @@ export function Home() {
 
             getDocs(queryRef)
             .then((snapshot) => {
-                let linksList = [] as LinkProps[];
+                let linksList = [] as LinksProps[];
 
                 snapshot.forEach((doc) => {
                     linksList.push({

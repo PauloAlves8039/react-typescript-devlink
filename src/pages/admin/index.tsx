@@ -13,14 +13,7 @@ import {
   deleteDoc,
 } from "firebase/firestore";
 import notificationService from "../../utils/notificationService"; 
-
-interface LinksProps {
-    id: string;
-    name: string;
-    url: string;
-    bg: string;
-    color: string;
-}
+import type { LinksProps } from "../../interfaces/LinksProps";
 
 export function Admin() {
     const [nameInput, setNameInput] = useState("");
