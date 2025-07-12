@@ -12,11 +12,12 @@ import {
 import { useEffect, useState } from "react";
 import type { LinksProps } from "../../interfaces/LinksProps";
 import type { SocialLinksProps } from "../../interfaces/SocialLinksProps";
+import { useNavigate } from "react-router-dom";
 
 export function Home() {
-    // const [links, setLinks] = useState<LinkProps[]>([]);
     const [links, setLinks] = useState<LinksProps[]>([]);
     const [socialLinks, setSocialLinks] = useState<SocialLinksProps>();
+    const navigate = useNavigate();
 
     useEffect(() => {
         function loadLinks() {
@@ -59,10 +60,22 @@ export function Home() {
         }
         loadSocialLinks();
     }, []);
+
+    function handleGoToLogin() {
+        navigate("/login");
+    }
     
     return (
         <div className="flex flex-col w-full py-4 items-center justify-center">
             <h1 className="md:text-4xl  text-3xl font-bold text-white mt-20">Sujeito Programador</h1>
+
+            <button
+                onClick={handleGoToLogin}
+                className="mt-4 p-3 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700 transition-transform hover:scale-105 cursor-pointer"
+            >
+                Acessar Painel
+            </button>
+
             <span className="text-gray-50 mb-5 mt-3">Veja meus links 👇</span>
 
             <main className="flex flex-col w-11/12 max-w-xl text-center">
