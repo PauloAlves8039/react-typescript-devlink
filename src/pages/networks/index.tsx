@@ -34,6 +34,11 @@ export function Networks() {
     function handleRegister(e: FormEvent) {
         e.preventDefault();
 
+        if (facebook === "" && instagram === "" && youtube === "") {
+            notificationService.error("Preencha ao menos um campo para salvar!");
+            return;
+        }
+
         setDoc(doc(db, "social", "link"), {
             facebook: facebook,
             instagram: instagram,
@@ -86,7 +91,7 @@ export function Networks() {
 
                 <button
                     type="submit"
-                    className="text-white bg-blue-600 h-9 rounded-md items-center justify-center flex mb-7 font-medium"
+                    className="text-white bg-blue-600 h-9 rounded-md items-center justify-center flex mb-7 font-medium transition-transform hover:scale-105 cursor-pointer"
                 >
                     Salvar links
                 </button>

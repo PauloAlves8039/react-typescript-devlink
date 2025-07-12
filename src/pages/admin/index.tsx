@@ -135,7 +135,7 @@ export function Admin() {
                         className="w-11/12 max-w-lg flex flex-col items-center justify-between bg-zinc-900 rounded px-1 py-3"
                         style={{ marginBottom: 8, marginTop: 8, backgroundColor: backgroundColorInput }}
                     >
-                        <p className="font-medium" style={{ color: textColorInput }}>Canal do Youtube</p>
+                        <p className="font-medium" style={{ color: textColorInput }}>Meu Link</p>
                     </article>
                 </div>
 
@@ -151,7 +151,9 @@ export function Admin() {
                     </div>
                 )}
 
-                <button type="submit" className="mb-7 bg-blue-600 h-9 rounded-md text-white font-medium gap-4 flex justify-center items-center">
+                <button 
+                    type="submit" 
+                    className="mb-7 bg-blue-600 h-9 rounded-md text-white font-medium gap-4 flex justify-center items-center transition-transform hover:scale-105 cursor-pointer">
                     Cadastrar
                 </button>
             </form>
