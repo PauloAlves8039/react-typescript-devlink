@@ -66,7 +66,7 @@ export function Home() {
     }
     
     return (
-        <div className="flex flex-col w-full py-4 items-center justify-center">
+        <div className="flex flex-col w-full py-4 items-center justify-center animation-back-in-up-in-2s">
             <h1 className="md:text-4xl  text-3xl font-bold text-white mt-20">Sujeito Programador</h1>
 
             <button

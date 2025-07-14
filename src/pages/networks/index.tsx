@@ -61,7 +61,7 @@ export function Networks() {
     }
 
     return (
-        <div className="flex items-center flex-col min-h-screen pb-7 px-2">
+        <div className="flex items-center flex-col min-h-screen pb-7 px-2 animation-back-in-up-in-2s">
             <Header />
 
             <form className="flex flex-col max-w-xl w-full" onSubmit={handleRegister}>

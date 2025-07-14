@@ -21,3 +21,13 @@ body {
   width: 28px; 
   height: 28px;
 }
+
+.animation-bounce-in-2s {
+    animation: bounceIn;
+    animation-duration: 2s;
+}
+
+.animation-back-in-up-in-2s {
+    animation: backInUp;
+    animation-duration: 2s;
+}
