@@ -1,11 +1,9 @@
-import { useEffect, useState, type ReactNode } from 'react';
+import { useEffect, useState } from 'react';
 import { auth } from "../../services/firebaseConnection";
 import { onAuthStateChanged } from "firebase/auth";
 import { Navigate } from "react-router-dom";
+import type { PrivateProps } from '../../interfaces/PrivateProps';
 
-interface PrivateProps {
-    children: ReactNode;
-}
 
 export function Private({ children }: PrivateProps): any {
     const [loading, setLoading] = useState(true)

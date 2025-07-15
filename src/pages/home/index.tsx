@@ -10,24 +10,14 @@ import {
   getDoc
 } from "firebase/firestore";
 import { useEffect, useState } from "react";
-
-interface LinkProps {
-    id: string;
-    name: string;
-    url: string;
-    bg: string;
-    color: string;
-}
-
-interface SocialLinksProps {
-    facebook: string;
-    youtube: string;
-    instagram: string;
-}
+import type { LinksProps } from "../../interfaces/LinksProps";
+import type { SocialLinksProps } from "../../interfaces/SocialLinksProps";
+import { useNavigate } from "react-router-dom";
 
 export function Home() {
-    const [links, setLinks] = useState<LinkProps[]>([]);
+    const [links, setLinks] = useState<LinksProps[]>([]);
     const [socialLinks, setSocialLinks] = useState<SocialLinksProps>();
+    const navigate = useNavigate();
 
     useEffect(() => {
         function loadLinks() {
@@ -36,7 +26,7 @@ export function Home() {
 
             getDocs(queryRef)
             .then((snapshot) => {
-                let linksList = [] as LinkProps[];
+                let linksList = [] as LinksProps[];
 
                 snapshot.forEach((doc) => {
                     linksList.push({
@@ -70,10 +60,22 @@ export function Home() {
         }
         loadSocialLinks();
     }, []);
+
+    function handleGoToLogin() {
+        navigate("/login");
+    }
     
     return (
-        <div className="flex flex-col w-full py-4 items-center justify-center">
+        <div className="flex flex-col w-full py-4 items-center justify-center animation-back-in-up-in-2s">
             <h1 className="md:text-4xl  text-3xl font-bold text-white mt-20">Sujeito Programador</h1>
+
+            <button
+                onClick={handleGoToLogin}
+                className="mt-4 p-3 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700 transition-transform hover:scale-105 cursor-pointer"
+            >
+                Acessar Painel
+            </button>
+
             <span className="text-gray-50 mb-5 mt-3">Veja meus links 👇</span>
 
             <main className="flex flex-col w-11/12 max-w-xl text-center">

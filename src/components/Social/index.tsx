@@ -1,9 +1,4 @@
-import type { ReactNode } from "react";
-
-interface SocialProps{
-  url: string;
-  children: ReactNode;
-}
+import type { SocialProps } from "../../interfaces/SocialProps";
 
 export function Social({ url, children }: SocialProps){
   return(

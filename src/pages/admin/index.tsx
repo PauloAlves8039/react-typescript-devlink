@@ -12,14 +12,8 @@ import {
   doc,
   deleteDoc,
 } from "firebase/firestore";
-
-interface LinksProps {
-    id: string;
-    name: string;
-    url: string;
-    bg: string;
-    color: string;
-}
+import notificationService from "../../utils/notificationService"; 
+import type { LinksProps } from "../../interfaces/LinksProps";
 
 export function Admin() {
     const [nameInput, setNameInput] = useState("");
@@ -47,6 +41,9 @@ export function Admin() {
 
             setLinks(linkList);
 
+        }, (error) => {
+            notificationService.error("Erro ao carregar os links.");
+            console.error("Erro ao carregar links:", error);
         });
 
         return () => {
@@ -59,7 +56,7 @@ export function Admin() {
         e.preventDefault();
 
         if (nameInput === "" || urlInput === "") {
-            alert("Preencha todos os campos!");
+            notificationService.error("Preencha todos os campos!");
             return;
         }
 
@@ -73,20 +70,27 @@ export function Admin() {
             .then(() => {
                 setNameInput("");
                 setUrlInput("");
-                console.log("CADASTRADO COM SUCESSO!");
+                notificationService.success("Link cadastrado com sucesso!");
             })
             .catch((error) => {
-                console.log(`ERRO AO CADASTRAR NO BANCO ${error}`);
+                notificationService.error("Erro ao cadastrar o link.");
+                console.log(`Erro ao cadastrar no banco: ${error}`);
             });
     }
 
     async function handleDeleteLink(id: string) {
         const decRef = doc(db, "links", id);
-        await deleteDoc(decRef);
+        try {
+            await deleteDoc(decRef);
+            notificationService.success("Link excluído com sucesso!");
+        } catch (error) {
+            notificationService.error("Erro ao excluir o link.");
+            console.error("Erro ao excluir link:", error);
+        }
     }
     
     return (
-        <div className="flex items-center flex-col min-h-screen pb-7 px-2">
+        <div className="flex items-center flex-col min-h-screen pb-7 px-2 animation-back-in-up-in-2s">
             <Header />
 
             <form className="flex flex-col mt-8 mb-3 w-full max-w-xl" onSubmit={handleRegister}>
@@ -131,7 +135,7 @@ export function Admin() {
                         className="w-11/12 max-w-lg flex flex-col items-center justify-between bg-zinc-900 rounded px-1 py-3"
                         style={{ marginBottom: 8, marginTop: 8, backgroundColor: backgroundColorInput }}
                     >
-                        <p className="font-medium" style={{ color: textColorInput }}>Canal do Youtube</p>
+                        <p className="font-medium" style={{ color: textColorInput }}>Meu Link</p>
                     </article>
                 </div>
 
@@ -147,7 +151,9 @@ export function Admin() {
                     </div>
                 )}
 
-                <button type="submit" className="mb-7 bg-blue-600 h-9 rounded-md text-white font-medium gap-4 flex justify-center items-center">
+                <button 
+                    type="submit" 
+                    className="mb-7 bg-blue-600 h-9 rounded-md text-white font-medium gap-4 flex justify-center items-center transition-transform hover:scale-105 cursor-pointer">
                     Cadastrar
                 </button>
             </form>

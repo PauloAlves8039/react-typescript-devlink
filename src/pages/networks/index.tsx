@@ -3,6 +3,7 @@ import { db } from "../../services/firebaseConnection";
 import { setDoc, doc, getDoc } from "firebase/firestore";
 import { Header } from "../../components/Header";
 import { Input } from "../../components/Input";
+import notificationService from "../../utils/notificationService";
 
 export function Networks() {
     const [facebook, setFacebook] = useState("");
@@ -20,6 +21,10 @@ export function Networks() {
                         setInstagram(snapshot.data()?.instagram);
                         setYoutube(snapshot.data()?.youtube);
                     }
+                })
+                .catch((error) => {
+                    notificationService.error("Erro ao carregar os links.");
+                    console.error("Erro ao carregar links:", error);
                 });
         }
 
@@ -29,16 +34,22 @@ export function Networks() {
     function handleRegister(e: FormEvent) {
         e.preventDefault();
 
+        if (facebook === "" && instagram === "" && youtube === "") {
+            notificationService.error("Preencha ao menos um campo para salvar!");
+            return;
+        }
+
         setDoc(doc(db, "social", "link"), {
             facebook: facebook,
             instagram: instagram,
             youtube: youtube
         })
         .then(() => {
-            console.log("CADASTRADO COM SUCESSO!");
+            notificationService.success("Links cadastrados com sucesso!"); 
             clearFields();
         })
         .catch((error) => {
+            notificationService.error("Erro ao salvar os links.");
             console.log(`ERRO AO SALVAR ${error}`);
         });
     }
@@ -50,7 +61,7 @@ export function Networks() {
     }
 
     return (
-        <div className="flex items-center flex-col min-h-screen pb-7 px-2">
+        <div className="flex items-center flex-col min-h-screen pb-7 px-2 animation-back-in-up-in-2s">
             <Header />
 
             <form className="flex flex-col max-w-xl w-full" onSubmit={handleRegister}>
@@ -80,7 +91,7 @@ export function Networks() {
 
                 <button
                     type="submit"
-                    className="text-white bg-blue-600 h-9 rounded-md items-center justify-center flex mb-7 font-medium"
+                    className="text-white bg-blue-600 h-9 rounded-md items-center justify-center flex mb-7 font-medium transition-transform hover:scale-105 cursor-pointer"
                 >
                     Salvar links
                 </button>
